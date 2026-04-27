@@ -26,6 +26,19 @@ def verVenda(total_vendas):
     total_cartao = sum(cartao["preco"] for cartao in total_vendas if cartao["forma_pagamento"] in ('Crédito', 'Débito'))
     total_geral = sum(total["preco"] for total in total_vendas)
 
+    nomes_vendidos = []
+    contagem = {}
+    for venda in total_vendas:
+        nomes_vendidos.append(venda['nome'])
+    
+    for nome in nomes_vendidos:
+        if nome in contagem:
+            contagem[nome] += 1
+        else:
+            contagem[nome] = 1
+
+    ranking = sorted(contagem, key=contagem.get, reverse=True)
+
     print(f'{"TABELA VENDAS":-^40}')
     for posicao, venda in enumerate(total_vendas):
         print(f'{posicao+1}° - {venda["nome"]} - R${venda["preco"]:.2f} - {venda["forma_pagamento"]}')
@@ -35,5 +48,14 @@ def verVenda(total_vendas):
     print(f'Total no cartão: R${total_cartao:.2f}')
     print(f'Total geral: R${total_geral:.2f}')
     print('--' * 20)
+    print('PRODUTOS MAIS VENDIDOS')
+    for produto in ranking[:3]:
+        print(f'-> {produto}: {contagem[produto]} venda(s)')
+    print('PRODUTOS MENOS VENDIDOS')
+    for produto in reversed(ranking[-3:]):
+        print(f'-> {produto}: {contagem[produto]} venda(s)')
+    print('--' * 20)
+
+
     input('Pressione Enter para voltar ao menu.')
     os.system('cls' if os.name == 'nt' else 'clear')

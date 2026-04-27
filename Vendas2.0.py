@@ -27,3 +27,5 @@ while True:
             verVenda(total_vendas)
         elif opcao == 4:
             exit()
+        else:
+            print('\33[31mValor inválido! Tente novamente.\33[m')
