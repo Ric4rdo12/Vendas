@@ -2,10 +2,14 @@
 import os
 from funcoes.operacoes.modificadores import adicionarVenda, removerVenda
 from funcoes.tela.visualizacao import menu, verVenda
+import json
 
 
-#LISTA PARA AS VENDAS
-total_vendas = []
+try:
+    with open('vendas.json', 'r', encoding='utf-8') as arquivo:
+        total_vendas = json.load(arquivo)
+except (FileNotFoundError, json.JSONDecodeError):
+    total_vendas = []
 
 #CÓDIGO PRINCIPAL
 while True:

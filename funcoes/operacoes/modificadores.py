@@ -1,4 +1,5 @@
 import os
+import json
 
 
 def adicionarVenda(total_vendas):
@@ -35,6 +36,8 @@ def adicionarVenda(total_vendas):
                 if escolha_pagamento in formas_de_pagamento:
                     venda_atual['forma_pagamento'] = formas_de_pagamento[escolha_pagamento]
                     total_vendas.append(venda_atual.copy())
+                    with open('vendas.json', 'w', encoding='utf-8') as arquivo:
+                        json.dump(total_vendas, arquivo, indent=4, ensure_ascii=False)
                     os.system('cls' if os.name == 'nt' else 'clear')
                     print('\33[32mVenda registrada com sucesso!\33[m')    
                     break
@@ -70,6 +73,8 @@ def removerVenda(total_vendas):
         else:
             if 1 <= escolha <= len(total_vendas):
                 removed = total_vendas.pop(escolha - 1)
+                with open('vendas.json', 'w', encoding='utf-8') as arquivo:
+                    json.dump(total_vendas, arquivo, indent=4, ensure_ascii=False)
                 os.system('cls' if os.name == 'nt' else 'clear')
                 print(f'\33[32mA venda: {removed["nome"]} de R${removed["preco"]:.2f} paga com {removed["forma_pagamento"]} foi removida com sucesso!\33[m')
                 return
