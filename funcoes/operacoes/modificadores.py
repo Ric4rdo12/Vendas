@@ -124,7 +124,7 @@ def editarVenda(total_vendas):
                     json.dump(total_vendas, arquivo, indent=4, ensure_ascii=False)
 
                 os.system('cls' if os.name == 'nt' else 'clear')
-                print('Nome alterado com sucesso!')
+                print('\33[32mNome alterado com sucesso!\33[32m')
                 break
 
             elif editar == 2:
@@ -142,7 +142,7 @@ def editarVenda(total_vendas):
                         json.dump(total_vendas, arquivo, indent=4, ensure_ascii=False)
 
                     os.system('cls' if os.name == 'nt' else 'clear')
-                    print('Preço alterado com sucesso!')
+                    print('\33[32mPreço alterado com sucesso!\33[m')
                     break
                 break
 
@@ -166,7 +166,7 @@ def editarVenda(total_vendas):
                         with open('vendas.json', 'w', encoding='utf-8') as arquivo:
                             json.dump(total_vendas, arquivo, indent=4, ensure_ascii=False)
                         os.system('cls' if os.name == 'nt' else 'clear')
-                        print('Forma de pagamento alterada com sucesso!')
+                        print('\33[32mForma de pagamento alterada com sucesso!\33[m')
                         break
 
                     else:
@@ -176,3 +176,39 @@ def editarVenda(total_vendas):
             else:
                 os.system('cls' if os.name == 'nt' else 'clear')
                 print('\33[31mValor inválido! Tente novamente.\33[m')
+
+
+def limparVendas(total_vendas):
+    """Limpa todas as vendas já registradadas na lista e no JSON
+
+    Args:
+        total_vendas (list): lista principal que armazena todas as vendas registradas.
+    """
+    if not total_vendas:
+        print('\33[31mNenhuma venda registrada.\33[m')
+        return
+    
+    escolha = ' '
+    while escolha not in 'SN':
+        try:
+            escolha = input('Você tem certeza que quer limpar todas as vendas? (S/N) ').strip().upper()[0]
+        except (IndexError):
+            os.system('cls' if os.name == 'nt' else 'clear')
+            print('\33[31mValor inválido! Tente novamente.\33[m')
+            continue
+        else:
+            if escolha == 'S':
+                print('Limpando todas as vendas.')
+                total_vendas.clear()
+                with open('vendas.json', 'w', encoding='utf-8') as arquivo:
+                    json.dump(total_vendas, arquivo, indent=4, ensure_ascii=False)
+                os.system('cls' if os.name == 'nt' else 'clear')
+                print('\33[32mVendas limpadas com sucesso!\33[m')
+                return
+            elif escolha == 'N':
+                os.system('cls' if os.name == 'nt' else 'clear')
+                print('\33[32mCancelamento da função limpar vendas.\33[m')
+                return
+            else:
+                os.system('cls' if os.name == 'nt' else 'clear')
+                print('\33[31mValor inválido!. Tente novamente.\33[m')
