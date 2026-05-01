@@ -6,7 +6,10 @@ def menu():
     print("""1 -> Adicionar venda
 2 -> Remover venda
 3 -> Ver vendas
-4 -> Sair
+4 -> Editar venda
+5 -> Buscar venda
+6 -> Limpar vendas
+7 -> Sair
 """)
 
 

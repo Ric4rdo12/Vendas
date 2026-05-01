@@ -82,3 +82,97 @@ def removerVenda(total_vendas):
             else:
                 os.system('cls' if os.name == 'nt' else 'clear')
                 print(f'\33[33mNúmero inválido! Digite um número entre 1 e {len(total_vendas)} da posição da venda que você quer remover.\33[m')
+
+
+def editarVenda(total_vendas):
+    """Edita nome, preço ou forma de pagamento de uma venda de acordo com a posição dela
+
+    Args:
+        total_vendas (list): lista principal que armazena todas as vendas registradas.
+    """
+    if not total_vendas:
+        print('\33[31mNenhuma venda registrada.\33[m')
+        return
+    
+    while True:
+        print(f'{"EDITAR VENDA":-^40}')
+        for posicao, venda in enumerate(total_vendas):
+            print(f'{posicao+1}° - {venda["nome"]} - R${venda["preco"]:.2f} - {venda["forma_pagamento"]}')
+        print('--' * 20)
+        try:
+            escolha = int(input('Qual venda você quer editar? (digite a posição da venda) ')) - 1
+            if 0 <= escolha <= len(total_vendas) - 1:
+                print('1 -> Nome\n2 -> Preço\n3 -> Forma de pagamento')
+                editar = int(input('O que quer editar? Digite o número do campo: '))
+                print('--' * 20)
+            else:
+                os.system('cls' if os.name == 'nt' else 'clear')
+                print(f'\33[33mNúmero inválido! Digite um número entre 1 e {len(total_vendas)} da posição da venda que você quer remover.\33[m')
+                continue
+
+        except (ValueError, TypeError):
+            os.system('cls' if os.name == 'nt' else 'clear')
+            print('\33[31mValor inválido! Tente novamente.\33[m')
+            continue
+
+        else:
+            if editar == 1:
+                print(f'Nome atual: {total_vendas[escolha]['nome']}')
+                total_vendas[escolha]['nome'] = input('Novo nome: ').strip().title()
+                
+                with open('vendas.json', 'w', encoding='utf-8') as arquivo:
+                    json.dump(total_vendas, arquivo, indent=4, ensure_ascii=False)
+
+                os.system('cls' if os.name == 'nt' else 'clear')
+                print('Nome alterado com sucesso!')
+                break
+
+            elif editar == 2:
+                while True:
+                    try:
+                        print(f'Preço atual: {total_vendas[escolha]['preco']}')
+                        total_vendas[escolha]['preco'] = float(input('Novo preço: '))
+                
+                    except (ValueError, TypeError):
+                        os.system('cls' if os.name == 'nt' else 'clear')
+                        print('\33[31mValor inválido! Tente novamente.\33[m')
+                        continue
+
+                    with open('vendas.json', 'w', encoding='utf-8') as arquivo:
+                        json.dump(total_vendas, arquivo, indent=4, ensure_ascii=False)
+
+                    os.system('cls' if os.name == 'nt' else 'clear')
+                    print('Preço alterado com sucesso!')
+                    break
+                break
+
+            elif editar == 3:
+                formas_de_pagamento = {
+                    '1': 'Dinheiro',
+                    '2': 'Pix',
+                    '3': 'Crédito',
+                    '4': 'Débito'
+                    }
+                
+                while True:
+                    print(f'Forma de pagamento atual: {total_vendas[escolha]["forma_pagamento"]}')
+                    for chave, valor in formas_de_pagamento.items():
+                        print(f'{chave} -> {valor}')
+                    escolha_pagamento = input('Qual a nova forma de pagamento? ')
+
+                    if escolha_pagamento in formas_de_pagamento:
+                        total_vendas[escolha]['forma_pagamento'] = formas_de_pagamento[escolha_pagamento]
+
+                        with open('vendas.json', 'w', encoding='utf-8') as arquivo:
+                            json.dump(total_vendas, arquivo, indent=4, ensure_ascii=False)
+                        os.system('cls' if os.name == 'nt' else 'clear')
+                        print('Forma de pagamento alterada com sucesso!')
+                        break
+
+                    else:
+                        os.system('cls' if os.name == 'nt' else 'clear')
+                        print('\33[31mValor inválido! Tente novamente.\33[m')
+                break
+            else:
+                os.system('cls' if os.name == 'nt' else 'clear')
+                print('\33[31mValor inválido! Tente novamente.\33[m')

@@ -1,6 +1,6 @@
 #IMPORTAÇÕES
 import os
-from funcoes.operacoes.modificadores import adicionarVenda, removerVenda
+from funcoes.operacoes.modificadores import adicionarVenda, removerVenda, editarVenda
 from funcoes.tela.visualizacao import menu, verVenda
 import json
 
@@ -30,6 +30,8 @@ while True:
         elif opcao == 3:
             verVenda(total_vendas)
         elif opcao == 4:
+            editarVenda(total_vendas)
+        elif opcao == 7:
             exit()
         else:
             print('\33[31mValor inválido! Tente novamente.\33[m')
