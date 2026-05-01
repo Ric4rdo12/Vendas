@@ -1,7 +1,7 @@
 #IMPORTAÇÕES
 import os
 from funcoes.operacoes.modificadores import adicionarVenda, removerVenda, editarVenda, limparVendas
-from funcoes.tela.visualizacao import menu, verVenda
+from funcoes.tela.visualizacao import menu, verVenda, buscarVenda
 import json
 
 
@@ -31,6 +31,8 @@ while True:
             verVenda(total_vendas)
         elif opcao == 4:
             editarVenda(total_vendas)
+        elif opcao == 5:
+            buscarVenda(total_vendas)
         elif opcao == 6:
             limparVendas(total_vendas)
         elif opcao == 7:

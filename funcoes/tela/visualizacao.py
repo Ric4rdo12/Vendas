@@ -18,7 +18,7 @@ def verVenda(total_vendas):
     em categorias (dinheiro, PIX, cartão e total) em baixo.
 
     Args:
-        total_vendas (list): lista principal que armazena todas as vendas registradas
+        total_vendas (list): lista principal que armazena todas as vendas registradas.
     """
     if not total_vendas:
         print('\33[31mNenhuma venda registrada.\33[m')
@@ -59,6 +59,34 @@ def verVenda(total_vendas):
         print(f'-> {produto}: {contagem[produto]} venda(s)')
     print('--' * 20)
 
+    input('Pressione Enter para voltar ao menu.')
+    os.system('cls' if os.name == 'nt' else 'clear')
 
+
+def buscarVenda(total_vendas):
+    """O usuário digita o nome da venda que ele quer buscar e será buscado todas as vendas com o nome
+    digitado.
+
+    Args:
+        total_vendas (list): lista principal que armazena todas as vendas registradas.
+    """
+    if not total_vendas:
+        print('\33[31mNenhuma venda registrada.\33[m')
+        return
+    
+    nome_busca = input('Qual o nome da venda que deseja buscar? ').strip().title()
+    print('--' * 20)
+    encontrou = False
+    for posicao, venda in enumerate(total_vendas):
+        
+        if nome_busca == venda['nome']:
+            encontrou = True
+            print(f'{posicao + 1}° - {venda['nome']} - R${venda['preco']:.2f} - {venda['forma_pagamento']}')
+    
+    if not encontrou:
+        os.system('cls' if os.name == 'nt' else 'clear')
+        print(f'\33[31mNenhuma venda registrada como {nome_busca} foi encontrada.\33[m')
+        return
+    print('--' * 20)
     input('Pressione Enter para voltar ao menu.')
     os.system('cls' if os.name == 'nt' else 'clear')

@@ -205,10 +205,12 @@ def limparVendas(total_vendas):
                 os.system('cls' if os.name == 'nt' else 'clear')
                 print('\33[32mVendas limpadas com sucesso!\33[m')
                 return
+            
             elif escolha == 'N':
                 os.system('cls' if os.name == 'nt' else 'clear')
                 print('\33[32mCancelamento da função limpar vendas.\33[m')
                 return
+            
             else:
                 os.system('cls' if os.name == 'nt' else 'clear')
                 print('\33[31mValor inválido!. Tente novamente.\33[m')
