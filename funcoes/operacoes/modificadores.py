@@ -1,5 +1,6 @@
 import os
 import json
+from funcoes.tela.visualizacao import msgErro, msgSucesso, mostrarVendas
 
 
 def adicionarVenda(total_vendas):
@@ -24,7 +25,7 @@ def adicionarVenda(total_vendas):
 
         except (ValueError, TypeError):
             os.system('cls' if os.name == 'nt' else 'clear')
-            print('\33[31mValor(es) inválido(s). Tente novamente.\33[m')
+            msgErro()
             continue
 
         else:
@@ -39,11 +40,11 @@ def adicionarVenda(total_vendas):
                     with open('vendas.json', 'w', encoding='utf-8') as arquivo:
                         json.dump(total_vendas, arquivo, indent=4, ensure_ascii=False)
                     os.system('cls' if os.name == 'nt' else 'clear')
-                    print('\33[32mVenda registrada com sucesso!\33[m')    
+                    msgSucesso()   
                     break
                 else:
                     os.system('cls' if os.name == 'nt' else 'clear')
-                    print('\33[33mValor inválido. Tente novamente.\33[m')
+                    msgErro()
         break
 
 
@@ -54,20 +55,17 @@ def removerVenda(total_vendas):
         total_vendas (list): lista principal que armazena todas as vendas registradas.
     """
     if not total_vendas:
-        print('\33[31mNenhuma venda registrada.\33[m')
+        msgErro('Nenhuma venda registrada.')
         return
     
     while True:
         try:
-            print(f'{"REMOVER VENDA":-^40}')
-            for posicao, venda in enumerate(total_vendas):
-                print(f'{posicao+1}° - {venda["nome"]} - R${venda["preco"]:.2f} - {venda["forma_pagamento"]}')
-            print('--' * 20)
+            mostrarVendas(total_vendas)
             escolha = int(input('Qual venda você quer remover? (digite a posição da venda) '))
 
         except (ValueError, TypeError):
             os.system('cls' if os.name == 'nt' else 'clear')
-            print('\33[31mValor inválido! Tente novamente.\33[m')
+            msgErro()
             continue
         
         else:
@@ -76,12 +74,12 @@ def removerVenda(total_vendas):
                 with open('vendas.json', 'w', encoding='utf-8') as arquivo:
                     json.dump(total_vendas, arquivo, indent=4, ensure_ascii=False)
                 os.system('cls' if os.name == 'nt' else 'clear')
-                print(f'\33[32mA venda: {removed["nome"]} de R${removed["preco"]:.2f} paga com {removed["forma_pagamento"]} foi removida com sucesso!\33[m')
-                return
+                msgSucesso('Venda removida com sucesso!')
+                break
         
             else:
                 os.system('cls' if os.name == 'nt' else 'clear')
-                print(f'\33[33mNúmero inválido! Digite um número entre 1 e {len(total_vendas)} da posição da venda que você quer remover.\33[m')
+                msgErro(f'Digite a posição da venda (1 a {len(total_vendas)}).')
 
 
 def editarVenda(total_vendas):
@@ -91,7 +89,7 @@ def editarVenda(total_vendas):
         total_vendas (list): lista principal que armazena todas as vendas registradas.
     """
     if not total_vendas:
-        print('\33[31mNenhuma venda registrada.\33[m')
+        msgErro('Nenhuma venda registrada.')
         return
     
     while True:
@@ -107,12 +105,12 @@ def editarVenda(total_vendas):
                 print('--' * 20)
             else:
                 os.system('cls' if os.name == 'nt' else 'clear')
-                print(f'\33[33mNúmero inválido! Digite um número entre 1 e {len(total_vendas)} da posição da venda que você quer remover.\33[m')
+                msgErro(f'Digite a posição da venda (1 a {len(total_vendas)}).')
                 continue
 
         except (ValueError, TypeError):
             os.system('cls' if os.name == 'nt' else 'clear')
-            print('\33[31mValor inválido! Tente novamente.\33[m')
+            msgErro()
             continue
 
         else:
@@ -124,25 +122,25 @@ def editarVenda(total_vendas):
                     json.dump(total_vendas, arquivo, indent=4, ensure_ascii=False)
 
                 os.system('cls' if os.name == 'nt' else 'clear')
-                print('\33[32mNome alterado com sucesso!\33[32m')
+                msgSucesso('Nome alterado com sucesso!')
                 break
 
             elif editar == 2:
                 while True:
                     try:
-                        print(f'Preço atual: {total_vendas[escolha]['preco']}')
-                        total_vendas[escolha]['preco'] = float(input('Novo preço: '))
+                        print(f'Preço atual: R${total_vendas[escolha]['preco']}')
+                        total_vendas[escolha]['preco'] = float(input('Novo preço: R$'))
                 
                     except (ValueError, TypeError):
                         os.system('cls' if os.name == 'nt' else 'clear')
-                        print('\33[31mValor inválido! Tente novamente.\33[m')
+                        msgErro()
                         continue
 
                     with open('vendas.json', 'w', encoding='utf-8') as arquivo:
                         json.dump(total_vendas, arquivo, indent=4, ensure_ascii=False)
 
                     os.system('cls' if os.name == 'nt' else 'clear')
-                    print('\33[32mPreço alterado com sucesso!\33[m')
+                    msgSucesso('Preço alterado com sucesso!')
                     break
                 break
 
@@ -166,16 +164,16 @@ def editarVenda(total_vendas):
                         with open('vendas.json', 'w', encoding='utf-8') as arquivo:
                             json.dump(total_vendas, arquivo, indent=4, ensure_ascii=False)
                         os.system('cls' if os.name == 'nt' else 'clear')
-                        print('\33[32mForma de pagamento alterada com sucesso!\33[m')
+                        msgSucesso('Forma de pagamento alterada com sucesso!')
                         break
 
                     else:
                         os.system('cls' if os.name == 'nt' else 'clear')
-                        print('\33[31mValor inválido! Tente novamente.\33[m')
+                        msgErro()
                 break
             else:
                 os.system('cls' if os.name == 'nt' else 'clear')
-                print('\33[31mValor inválido! Tente novamente.\33[m')
+                msgErro()
 
 
 def limparVendas(total_vendas):
@@ -185,7 +183,7 @@ def limparVendas(total_vendas):
         total_vendas (list): lista principal que armazena todas as vendas registradas.
     """
     if not total_vendas:
-        print('\33[31mNenhuma venda registrada.\33[m')
+        msgErro('Nenhuma venda registrada.')
         return
     
     escolha = ' '
@@ -194,7 +192,7 @@ def limparVendas(total_vendas):
             escolha = input('Você tem certeza que quer limpar todas as vendas? (S/N) ').strip().upper()[0]
         except (IndexError):
             os.system('cls' if os.name == 'nt' else 'clear')
-            print('\33[31mValor inválido! Tente novamente.\33[m')
+            msgErro()
             continue
         else:
             if escolha == 'S':
@@ -203,7 +201,7 @@ def limparVendas(total_vendas):
                 with open('vendas.json', 'w', encoding='utf-8') as arquivo:
                     json.dump(total_vendas, arquivo, indent=4, ensure_ascii=False)
                 os.system('cls' if os.name == 'nt' else 'clear')
-                print('\33[32mVendas limpadas com sucesso!\33[m')
+                msgSucesso('Vendas limpadas com sucesso!')
                 return
             
             elif escolha == 'N':
@@ -213,4 +211,4 @@ def limparVendas(total_vendas):
             
             else:
                 os.system('cls' if os.name == 'nt' else 'clear')
-                print('\33[31mValor inválido!. Tente novamente.\33[m')
+                msgErro()

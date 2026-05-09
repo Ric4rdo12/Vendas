@@ -1,5 +1,15 @@
 [
     {
+        "nome": "Calopsita",
+        "preco": 15.0,
+        "forma_pagamento": "Pix"
+    },
+    {
+        "nome": "Pássaro Pequeno",
+        "preco": 10.0,
+        "forma_pagamento": "Pix"
+    },
+    {
         "nome": "Friskies",
         "preco": 10.0,
         "forma_pagamento": "Dinheiro"

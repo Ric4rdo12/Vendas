@@ -1,7 +1,7 @@
 #IMPORTAÇÕES
 import os
 from funcoes.operacoes.modificadores import adicionarVenda, removerVenda, editarVenda, limparVendas
-from funcoes.tela.visualizacao import menu, verVenda, buscarVenda
+from funcoes.tela.visualizacao import menu, verVenda, buscarVenda, msgErro
 import json
 
 
@@ -21,7 +21,7 @@ while True:
 
     except (TypeError, ValueError):
         os.system('cls' if os.name == 'nt' else 'clear')
-        print('\33[31mValor inválido! Tente novamente.\33[m') 
+        msgErro()
     else:
         if opcao == 1:
             adicionarVenda(total_vendas)
@@ -38,4 +38,4 @@ while True:
         elif opcao == 7:
             exit()
         else:
-            print('\33[31mValor inválido! Tente novamente.\33[m')
+            msgErro()

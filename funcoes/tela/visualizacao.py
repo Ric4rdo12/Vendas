@@ -1,16 +1,18 @@
 import os
+from rich import print
+from rich.panel import Panel
+from rich.table import Table
 
 
 def menu():
-    print(f'{"PLATAFORMA DE VENDAS":-^40}')
-    print("""1 -> Adicionar venda
+    print(Panel("""1 -> Adicionar venda
 2 -> Remover venda
 3 -> Ver vendas
 4 -> Editar venda
 5 -> Buscar venda
 6 -> Limpar vendas
 7 -> Sair
-""")
+""", title='Menu Vendas', style='blue', width=25))
 
 
 def verVenda(total_vendas):
@@ -42,22 +44,18 @@ def verVenda(total_vendas):
 
     ranking = sorted(contagem, key=contagem.get, reverse=True)
 
-    print(f'{"TABELA VENDAS":-^40}')
-    for posicao, venda in enumerate(total_vendas):
-        print(f'{posicao+1}° - {venda["nome"]} - R${venda["preco"]:.2f} - {venda["forma_pagamento"]}')
-    print('--' * 20)
-    print(f'Total em dinheiro: R${total_dinheiro:.2f}')
-    print(f'Total em PIX: R${total_pix:.2f}')
-    print(f'Total no cartão: R${total_cartao:.2f}')
-    print(f'Total geral: R${total_geral:.2f}')
-    print('--' * 20)
-    print('PRODUTOS MAIS VENDIDOS')
-    for produto in ranking[:3]:
-        print(f'-> {produto}: {contagem[produto]} venda(s)')
-    print('PRODUTOS MENOS VENDIDOS')
-    for produto in reversed(ranking[-3:]):
-        print(f'-> {produto}: {contagem[produto]} venda(s)')
-    print('--' * 20)
+    mostrarVendas(total_vendas)
+
+    print(Panel(f'Dinheiro: R${total_dinheiro:.2f}\n'
+    f'PIX: R${total_pix:.2f}\n'
+    f'Cartão: R${total_cartao:.2f}\n'
+    f'Geral: R${total_geral:.2f}',
+    title='💰 Totais', expand=False))
+
+    print(Panel(
+    '\n'.join(f'🏆 {produto}: {contagem[produto]} venda(s)' for produto in ranking[:3]),
+    title='🥇 Produtos Mais Vendidos',
+    style='cyan', expand=False))
 
     input('Pressione Enter para voltar ao menu.')
     os.system('cls' if os.name == 'nt' else 'clear')
@@ -71,22 +69,49 @@ def buscarVenda(total_vendas):
         total_vendas (list): lista principal que armazena todas as vendas registradas.
     """
     if not total_vendas:
-        print('\33[31mNenhuma venda registrada.\33[m')
+        msgErro('Nenhuma venda registrada.')
         return
     
     nome_busca = input('Qual o nome da venda que deseja buscar? ').strip().title()
-    print('--' * 20)
     encontrou = False
+
+    tabela = Table(title=f'Busca: {nome_busca}', show_lines=True)
+    tabela.add_column('Posição')
+    tabela.add_column('Produto')
+    tabela.add_column('Preço')
+    tabela.add_column('Pagamento')
+
     for posicao, venda in enumerate(total_vendas):
-        
         if nome_busca == venda['nome']:
             encontrou = True
-            print(f'{posicao + 1}° - {venda['nome']} - R${venda['preco']:.2f} - {venda['forma_pagamento']}')
+            tabela.add_row(f'{posicao + 1}°', venda['nome'], f"R${venda['preco']:.2f}", venda['forma_pagamento'])
     
     if not encontrou:
         os.system('cls' if os.name == 'nt' else 'clear')
-        print(f'\33[31mNenhuma venda registrada como {nome_busca} foi encontrada.\33[m')
+        msgErro(f'Nenhuma venda registrada como {nome_busca} foi encontrada.')
         return
-    print('--' * 20)
+
+    print(tabela)
     input('Pressione Enter para voltar ao menu.')
     os.system('cls' if os.name == 'nt' else 'clear')
+
+
+def msgSucesso(mensagem='Venda registrada com sucesso!'):
+    print(Panel(mensagem, title='✅ Sucesso', style='green', expand=False))
+
+
+def msgErro(mensagem='Valor inválido! Tente novamente.'):
+    print(Panel(mensagem, title='❌ Erro', style='red', expand=False))
+
+
+def mostrarVendas(total_vendas):
+    tabela = Table(title='Tabela vendas', show_lines=True)
+
+    tabela.add_column('Posição')
+    tabela.add_column('Produto')
+    tabela.add_column('Preço')
+    tabela.add_column('Pagamento')
+
+    for posicao, venda in enumerate(total_vendas):
+        tabela.add_row(f'{posicao+1}°', venda['nome'], f"R${venda['preco']:.2f}", venda['forma_pagamento'])
+    print(tabela)
